@@ -29,6 +29,7 @@ The Repository is organized as follows:
 - subdirectory figures: the scripts to produce the figures - the resulting figures are stores in the subdirectories
   * eps: a subdirectory containing the figures as eps
   * jpg: a subdirectory containing the figures as jpg
+  * source_data: a subdirectory containing the source data of each figures as csv
   * Cumulative_slr_different_components_panel.R: the script producing Figure S1
   * Cumulative_slr_with_table.R: the script producing Figure 1 in different version (with table 1 in the figure and table 1 seperated from the figure)  
   * Exposure.R: the script producing Figure 3 and Figure S3
