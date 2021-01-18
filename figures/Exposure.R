@@ -67,7 +67,9 @@ ggplot(dataSSP2) +
 
 ggsave("./jpg/Fig3_subsidence_exposure_population_2015_2050_onlySSP2_lines.jpg", width = 12, height = 6, dpi = 600)
 ggsave("./eps/Fig3_subsidence_exposure_population_2015_2050_onlySSP2_lines.eps", width = 12, height = 6)
+write.csv(dataSSP2,"./source_data/Fig3_subsidence_exposure_population_2015_2050_onlySSP2_lines_source_data.csv",row.names=F)
 
+# remove letters from all rows except from the first row
 data[data$ssp!="SSP1",]$letter <- ""
 
 ggplot(data) + 
@@ -90,4 +92,6 @@ ggplot(data) +
 
 ggsave("./jpg/FigS3_subsidence_exposure_population_2015_2050.jpg", width = 12, height = 10, dpi = 600)
 ggsave("./eps/FigS3_subsidence_exposure_population_2015_2050.eps", width = 12, height = 10)
+write.csv(data,"./source_data/FigS3_subsidence_exposure_population_2015_2050_source_data.csv",row.names=F)
+
 

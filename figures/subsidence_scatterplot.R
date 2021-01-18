@@ -33,13 +33,13 @@ data <- data[data$pop_below_10p0!=0,]
 model1 <- lm(formula = data$sat_slr ~ log10(data$popdens_below_10p0))
 model2 <- lm(formula = data$uplift ~ log10(data$popdens_below_10p0))
 model3 <- lm(formula = data$citysubsidence_uncontrolled_high ~ log10(data$popdens_below_10p0))
-model4 <- lm(formula = data$deltasubsidence + data$citysubsidence_uncontrolled_high ~ log10(data$popdens_below_10p0))
+model4 <- lm(formula = data$deltasubsidence ~ log10(data$popdens_below_10p0))
 model5 <- lm(formula = data$rslr_high ~ log10(data$popdens_below_10p0))
 
 p1 <- lmp(lm(formula = data$sat_slr ~ log10(data$popdens_below_10p0)))
 p2 <- lmp(lm(formula = data$uplift ~ log10(data$popdens_below_10p0)))
 p3 <- lmp(lm(formula = data$citysubsidence_uncontrolled_high ~ log10(data$popdens_below_10p0)))
-p4 <- lmp(lm(formula = data$deltasubsidence + data$citysubsidence_uncontrolled_high ~ log10(data$popdens_below_10p0)))
+p4 <- lmp(lm(formula = data$deltasubsidence ~ log10(data$popdens_below_10p0)))
 p5 <- lmp(lm(formula = data$rslr_high ~ log10(data$popdens_below_10p0)))
 
 r1 <- summary(model1)$r.squared
@@ -64,29 +64,30 @@ data <- melt(data,by=c("locationid"))
 data <- merge(data,data_popdens,by=c("locationid"))
 data <- merge(data,data_text,by=c("variable"))
 
-data$variable <- factor(data$variable, levels=c("sat_slr","uplift","citysubsidence_uncontrolled_high","deltasubsidence","rslr_high"))
-levels(data$variable) <- c("Only climate induced SLR","GIA","City subsidence","Delta subsidence","All SLR components")
+data$variable <- factor(data$variable, levels=c("sat_slr","uplift","deltasubsidence","citysubsidence_uncontrolled_high","rslr_high"))
+levels(data$variable) <- c("(a) Climate-induced SLR only","(b) GIA only","(c) Delta subsidence only","(d) City subsidence only","(e) All SLR components combined")
 
 data$letter <- as.factor(data$variable)
-levels(data$letter)[levels(data$letter)=="Only climate induced SLR"] <- "(a)"
-levels(data$letter)[levels(data$letter)=="GIA"] <- "(b)"
-levels(data$letter)[levels(data$letter)=="City subsidence"] <- "(c)"
-levels(data$letter)[levels(data$letter)=="Delta subsidence"] <- "(d)"
-levels(data$letter)[levels(data$letter)=="All SLR components"] <- "(e)"
+levels(data$letter)[levels(data$letter)=="(a) Climate-induced SLR only"] <- "(a)"
+levels(data$letter)[levels(data$letter)=="(b) GIA only"] <- "(b)"
+levels(data$letter)[levels(data$letter)=="(c) Delta subsidence only"] <- "(c)"
+levels(data$letter)[levels(data$letter)=="(d) City subsidence only"] <- "(d)"
+levels(data$letter)[levels(data$letter)=="(e) All SLR components combined"] <- "(e)"
 
 ggplot(data) + 
     geom_point(aes(x=popdens_below_10p0,y=value)) + 
     geom_smooth(aes(x=popdens_below_10p0,y=value),method = lm) + 
     facet_grid(. ~ variable) +
-    geom_text(aes(0.001,104,label = label), size=7, hjust = 0, lineheight = .85, color="black") +
-    geom_text(aes(0.001,117,label = letter), size=7, hjust = 0, lineheight = .85, color="black") +
+    geom_text(aes(0.001,110,label = label), size=7, hjust = 0, lineheight = .85, color="black") +
     xlab("Coastal population density [people/km²]") + 
     ylab("Local relative sea-level change [mm/yr]") +
     scale_x_log10(labels = trans_format("log10", math_format(10^.x))) + 
     scale_y_continuous(limits = c(-14, 121), breaks=c(-10,0,10,20,30,40,50,60,70,80,90,100,110,120), expand = c(0,0)) +
     theme_bw(20) +
+    theme(strip.text.x = element_text(size = 12, hjust = 0)) + 
     theme(plot.margin = unit(c(0.4,1.2,0.4,0.4), "cm"))
 
 ggsave("./jpg/FigS2_subsidence_scatterplots_population_density.jpg", width = 16, height = 8, dpi = 600)
 ggsave("./eps/FigS2_subsidence_scatterplots_population_density.eps", width = 16, height = 8)
+write.csv(data,"./source_data/FigS2_subsidence_scatterplots_population_density_source_data.csv",row.names=F)
 

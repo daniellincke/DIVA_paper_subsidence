@@ -210,5 +210,5 @@ ggplot(data=dataToPlot) +
     theme(legend.position="bottom", legend.box = "vertical", legend.title= element_blank(), legend.spacing = unit(-0.3,"cm"))
 ggsave("./jpg/FigS1_cummulative_slr_allcomponents.jpg", width = 9.5, height = 10, dpi = 600)
 ggsave("./eps/FigS1_cummulative_slr_allcomponents.eps", width = 8.8, height = 10)
-
+write.csv(dataToPlot,"./source_data/FigS1_cummulative_slr_allcomponents_source_data.csv",row.names=F)
 

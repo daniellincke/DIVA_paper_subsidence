@@ -71,13 +71,6 @@ cls_df = join(cls.points, cls@data, by="id")
 plotData <- join(cls_df, clsResultsCompact, by = c("locationid"), type = "full")
 
 
-#group = cut(plotData$rslr_high_length, c(-Inf,2,4,6,8,10,15,20,Inf), right=FALSE)
-#plotData$rslr_high_length_cat <- as.factor(group)
-#group = cut(plotData$rslr_high_pop, c(-Inf,2,4,6,8,10,15,20,Inf), right=FALSE)
-#plotData$rslr_high_pop_cat <- as.factor(group)
-#levels(plotData$rslr_high_length_cat) <- c("<= 2 mm/yr", "2-4 mm/yr", "4-6 mm/yr", "6-8 mm/yr", "8-10 mm/yr", "10-15 mm/yr", "15-20 mm/yr", ">20 mm/yr")
-#levels(plotData$rslr_high_pop_cat) <- c("<= 2 mm/yr", "2-4 mm/yr", "4-6 mm/yr", "6-8 mm/yr", "8-10 mm/yr", "10-15 mm/yr", "15-20 mm/yr", ">20 mm/yr")
-
 group = cut(plotData$rslr_high_length, c(-Inf,2,5,10,15,20,Inf), right=FALSE)
 plotData$rslr_high_length_cat <- as.factor(group)
 group = cut(plotData$rslr_high_pop, c(-Inf,2,5,10,15,20,Inf), right=FALSE)
@@ -87,7 +80,6 @@ levels(plotData$rslr_high_pop_cat) <- c("<= 2 mm/yr", "2-5 mm/yr", "5-10 mm/yr",
 
 plotLengthW <- ggplot(data=plotData,aes(long,lat,group=group)) +
     geom_path(lwd=1.2,aes(color=rslr_high_length_cat)) +
-#    scale_color_discrete_sequential(palette = "Red-Blue", drop=FALSE, nmax = 8) +
     scale_color_manual(values=subsidencePaletteGreyFriendly, drop=FALSE) + 
     theme_minimal(20) +
     annotate("text", x = -170, y = 80, label = "(a)", size = 10) +
@@ -102,7 +94,6 @@ plotLengthW <- ggplot(data=plotData,aes(long,lat,group=group)) +
 
 plotPopW_legend <- ggplot(data=plotData,aes(long,lat,group=group)) +
     geom_path(lwd=1.2,aes(color=rslr_high_pop_cat)) +
-#    scale_color_discrete_sequential(palette = "Red-Blue", drop=FALSE, nmax = 8) +
     scale_color_manual(values=subsidencePaletteGreyFriendly, drop=FALSE) + 
     theme_minimal(20) +
     annotate("text", x = -170, y = 80, label = "(b)", size = 10) +
@@ -119,3 +110,4 @@ p <- grid.arrange(plotLengthW, plotPopW_legend, layout_matrix = rbind(c(1), c(2)
 
 ggsave("./jpg/Fig2_map_subsidence_GVA_publication.jpg", p, width = 13, height = 14, dpi = 600)
 ggsave("./eps/Fig2_map_subsidence_GVA_publication.eps", p, width = 13, height = 14)
+write.csv(plotData,"./source_data/Fig2_map_subsidence_GVA_publication_source_data.csv",row.names=F)

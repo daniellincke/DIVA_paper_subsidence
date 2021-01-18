@@ -96,8 +96,8 @@ print(sum(data_low_catstrophic_slr[1:nrow(data_low_catstrophic_slr),]$pop_below_
 # re-unite the data and do renaming for the legend
 #
 data <- rbind(data_low,data_high)
-names(data)[names(data)=="length_rel"] <- "Coastal relative sea level"
-names(data)[names(data)=="pop_rel"] <- "Population weighted coastal relative sea level"
+names(data)[names(data)=="length_rel"] <- "Length-weighted coastal relative sea level"
+names(data)[names(data)=="pop_rel"] <- "Population-weighted coastal relative sea level"
 
 #
 # reorganise data in a order to plot rslr vs. coastal lenght and rslr vs. coastal population in different colors
@@ -189,6 +189,7 @@ ggplot(data=data) +
     annotation_custom(myfirstcolumntable, xmin=30.7, xmax=30.5, ymin=39, ymax=39.5) +
     annotate("text", x = 15, y = 12, label = "The contemporary global average components of relative sea-level rise around the world's coasts in terms\nof absolute and relative contribution. The averages are weighted by coastal length and coastal population (based\non the Low Elevation Coastal Zone (LECZ below 10m)). A positive value indicates a relative rise in sea level.", hjust = 0)
 ggsave("./eps/Fig1_cummulative_slr_with_table.eps", width = 12, height = 9)
+write.csv(data,"./source_data/Fig1_cummulative_slr_source_data.csv",row.names=F)
 
 
 ggplot(data=data) +
